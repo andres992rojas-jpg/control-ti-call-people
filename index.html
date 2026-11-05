@@ -1,8 +1,61 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#10243a"><title>Control TI | Call People SAS</title><style>
 :root{--navy:#10243a;--blue:#1769aa;--bg:#f2f5f8;--line:#d8e1e9;--ink:#172536;--muted:#667789;--red:#b42318;--green:#16794b}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px system-ui,Arial}header{background:var(--navy);color:white;padding:15px 20px;display:flex;justify-content:space-between;position:sticky;top:0;z-index:3}header small{display:block;color:#c6d3df}main{max-width:1100px;margin:22px auto;padding:0 14px}.card,.login{background:white;border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:14px}.login{max-width:450px;margin:7vh auto}.hidden{display:none!important}h2,h3{color:var(--navy);margin:0 0 12px}label{display:block;font-weight:650;margin:12px 0 5px}input,select,textarea{width:100%;padding:11px;border:1px solid #c8d3dd;border-radius:9px;font:inherit;min-height:44px}textarea{min-height:85px}button{border:0;border-radius:9px;padding:11px 14px;background:var(--blue);color:white;font-weight:650;cursor:pointer;min-height:42px}button.secondary{background:#e8eef4;color:var(--ink)}button.danger{background:var(--red)}button.green{background:var(--green)}.nav,.actions,.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.nav{margin:14px 0}.nav button{background:#e3ebf2;color:var(--navy)}.nav button.active{background:var(--navy);color:white}.section{display:none}.section.active{display:block}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.stat{background:#edf3f8;padding:13px;border-radius:10px}.stat b{font-size:24px;display:block}.muted,.small{color:var(--muted);font-size:13px}.check{display:flex;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid #edf0f3}.check input{width:22px;min-height:22px}.check label{margin:0;font-weight:500}.sig{width:100%;height:150px;border:2px dashed #9aabba;border-radius:10px;touch-action:none}.sigbox{min-width:0}.tablewrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:650px}td,th{text-align:left;padding:9px;border-bottom:1px solid var(--line);vertical-align:top}th{background:#f0f4f7}.notice{background:#fff7df;border:1px solid #edd48b;padding:12px;border-radius:9px;margin:12px 0}.pill{font-size:12px;background:#e8f0f6;border-radius:20px;padding:3px 8px}.daily-sign{max-width:190px;max-height:75px;object-fit:contain;border-bottom:1px solid #9aabba}.daily-head{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.daily-title{margin-bottom:4px}.daily-meta{font-size:12px;color:var(--muted)}.daily-table{min-width:760px}.daily-table img{display:block}.print-only{display:none}@media print{body.print-daily header,body.print-daily .nav,body.print-daily .toolbar,body.print-daily .no-print,body.print-daily .footer{display:none!important}body.print-daily main{max-width:none;margin:0;padding:0}body.print-daily .section{display:none!important}body.print-daily .section.active{display:block!important}body.print-daily .card{border:0;padding:0;margin:0}body.print-daily .tablewrap{overflow:visible}body.print-daily table{min-width:0;width:100%;font-size:10px}body.print-daily td,body.print-daily th{padding:5px}body.print-daily .daily-table{min-width:0}body.print-daily .print-only{display:block}}.footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}@media(max-width:650px){main{margin:12px auto;padding:0 9px}.grid,.stats{grid-template-columns:1fr}.nav{display:grid;grid-template-columns:repeat(2,1fr)}.nav button{min-height:48px}.card{padding:13px}header{padding:12px}.toolbar{align-items:stretch}.toolbar input,.toolbar select{max-width:none;width:100%}}@media print{header,.nav,button,.no-print{display:none!important}body{background:white}.card{box-shadow:none}}
+.profile-login{max-width:860px;width:calc(100% - 28px);margin:8vh auto;background:transparent;border:0;padding:0;text-align:center}
+.profile-brand{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:44px;color:var(--navy);text-align:left}
+.profile-brand-mark{width:46px;height:46px;border-radius:13px;background:linear-gradient(145deg,#1769aa,#10243a);display:grid;place-items:center;color:#fff;font-weight:800;letter-spacing:.5px}
+.profile-brand b{display:block;font-size:17px;letter-spacing:1.5px}.profile-brand small{display:block;color:var(--muted);font-size:11px;letter-spacing:1.7px;margin-top:2px}
+.profile-heading{font-size:clamp(25px,4vw,34px);font-weight:750;letter-spacing:-.7px;margin-bottom:8px}
+.profile-subtitle{color:var(--muted);margin:0 0 30px}
+.profile-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px;max-width:650px;margin:0 auto}
+.profile-card{background:transparent!important;color:var(--ink)!important;border:2px solid transparent;padding:10px 8px 12px;display:flex;flex-direction:column;align-items:center;gap:12px;min-height:0;transition:transform .18s ease,border-color .18s ease,background .18s ease;box-shadow:none}
+.profile-card:hover,.profile-card:focus-visible{transform:translateY(-5px);border-color:#b7cde0;background:#fff!important;outline:none}
+.profile-avatar{width:clamp(104px,16vw,142px);height:clamp(104px,16vw,142px);border-radius:17px;display:grid;place-items:center;color:#fff;font-size:42px;font-weight:800;letter-spacing:-1px;box-shadow:0 9px 22px rgba(16,36,58,.16);border:3px solid rgba(255,255,255,.88);transition:box-shadow .18s ease,transform .18s ease}
+.profile-admin{background:linear-gradient(145deg,#24496d,#10243a)}
+.profile-andres{background:linear-gradient(145deg,#3288b8,#1769aa)}
+.profile-juan{background:linear-gradient(145deg,#5b6e91,#303f5d)}
+.profile-card:hover .profile-avatar{box-shadow:0 14px 28px rgba(16,36,58,.25);transform:scale(1.035)}
+.profile-name{font-size:16px;font-weight:650;color:var(--ink)}
+.login-credentials{max-width:380px;margin:0 auto;background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;text-align:left;box-shadow:0 16px 45px rgba(16,36,58,.1)}
+.selected-profile{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+.selected-profile .profile-avatar{width:64px;height:64px;border-radius:12px;font-size:22px;flex:0 0 64px}
+.selected-profile b{display:block;font-size:17px;color:var(--navy)}
+.selected-profile small{display:block;color:var(--muted);font-size:12px;margin-top:4px}
+@media(max-width:560px){.profile-login{margin:6vh auto}.profile-brand{margin-bottom:32px}.profile-grid{gap:8px}.profile-card{padding:8px 3px;gap:9px}.profile-avatar{width:min(27vw,112px);height:min(27vw,112px);border-radius:13px;font-size:32px}.profile-name{font-size:13px}.profile-heading{font-size:25px}}
+@media(prefers-reduced-motion:reduce){.profile-card,.profile-avatar{transition:none}}
 </style></head><body><header><div><b>CONTROL TI</b><small>Call People SAS · Gestión de equipos y visitas</small></div><span id="who" class="small"></span></header><main>
 
-<section id="login" class="login hidden"><h2>Ingresar a Control TI</h2><p class="muted">Acceso privado de Call People SAS.</p><form id="loginForm"><label>Usuario</label><input id="loginUsername" type="text" autocomplete="username" placeholder="ADMIN, ANDRES o JUAN" autocapitalize="none" spellcheck="false" required><label>Contraseña</label><input id="loginPass" type="password" autocomplete="current-password" required><button style="width:100%;margin-top:14px">Ingresar</button></form><p class="small">Ingresa con tu usuario y contraseña. No necesitas escribir un correo electrónico.</p><p id="loginError" class="small" role="alert"></p></section>
+<section id="login" class="login hidden profile-login">
+<div class="profile-brand"><span class="profile-brand-mark">CP</span><div><b>CONTROL TI</b><small>CALL PEOPLE SAS</small></div></div>
+<div id="profilePicker">
+<h2 class="profile-heading">¿Quién va a usar Control TI?</h2>
+<p class="profile-subtitle">Selecciona tu perfil para continuar</p>
+<div class="profile-grid">
+<button class="profile-card" type="button" data-profile-username="admin" data-profile-name="Administrador" data-profile-initials="AD">
+<span class="profile-avatar profile-admin"><span>AD</span></span><span class="profile-name">Administrador</span>
+</button>
+<button class="profile-card" type="button" data-profile-username="andres" data-profile-name="Andrés Rojas" data-profile-initials="AR">
+<span class="profile-avatar profile-andres"><span>AR</span></span><span class="profile-name">Andrés Rojas</span>
+</button>
+<button class="profile-card" type="button" data-profile-username="juan" data-profile-name="Juan Diego" data-profile-initials="JD">
+<span class="profile-avatar profile-juan"><span>JD</span></span><span class="profile-name">Juan Diego</span>
+</button>
+</div>
+</div>
+<div id="loginCredentialPanel" class="login-credentials hidden">
+<div class="selected-profile">
+<span id="selectedProfileAvatar" class="profile-avatar profile-admin"><span>AD</span></span>
+<div><b id="selectedProfileName">Administrador</b><small>Ingresa tu contraseña para continuar</small></div>
+</div>
+<form id="loginForm">
+<input id="loginUsername" type="hidden" autocomplete="username">
+<label for="loginPass">Contraseña</label>
+<input id="loginPass" type="password" autocomplete="current-password" required>
+<button style="width:100%;margin-top:14px">Ingresar</button>
+<button id="changeLoginProfile" type="button" class="secondary" style="width:100%;margin-top:8px">Cambiar de perfil</button>
+</form>
+<p id="loginError" class="small" role="alert"></p>
+</div>
+</section>
 <section id="app" class="hidden"><div class="toolbar no-print"><div><b id="welcome"></b><div class="small" id="role"></div></div><button class="secondary" onclick="go('passwordChange')">🔑 Cambiar contraseña</button><button class="secondary" id="logout">Cerrar sesión</button></div><div class="stats card"><div class="stat">TL registrados<b>8</b></div><div class="stat">Movimientos PC<b id="nMoves">0</b></div><div class="stat">Checklist<b id="nChecks">0</b></div></div>
 <nav class="nav no-print"><button class="active" data-tab="home">Inicio</button><button data-tab="move">Entrega / recibido</button><button data-tab="checklist">Checklist</button><button data-tab="dailyChecks">Hoja diaria checklist</button><button data-tab="dailyMoves">Hoja diaria entregas</button><button data-tab="history">Historial</button><button data-tab="trash">Papelera</button><button data-tab="audit">Auditoría</button><button data-tab="users" id="adminNav" class="hidden">Usuarios</button><button data-tab="passwordChange">Cambiar contraseña</button></nav>
 <section id="home" class="section active"><div class="card"><h2>Panel principal</h2><p>Registra movimientos de computadores y visitas de seguimiento por TL.</p><div class="actions"><button onclick="go('move');newMove()">+ Entrega / recibido de PC</button><button onclick="go('checklist');newCheck()">+ Nuevo checklist</button></div></div><div class="card"><h3>Seguridad de tu cuenta</h3><p class="muted">Desde aquí puedes actualizar tu contraseña de acceso a Control TI.</p><button type="button" onclick="go('passwordChange')">Cambiar mi contraseña</button></div><div class="card"><h3>Últimos registros</h3><div id="recent"></div></div><div class="notice">Conectado a la base de datos de Control TI. Los registros se comparten entre los dispositivos autorizados.</div><div id="legacyBox" class="notice hidden"><b>Se encontraron registros guardados en este navegador.</b><p class="small">Puedes importarlos a la base de datos online. La importación evita duplicar los registros que ya existan.</p><button id="importLegacyBtn" type="button">Importar registros de este navegador</button></div></section>
@@ -121,6 +174,29 @@ const LOGIN_ALIASES={
   'juan diego':'controlti-juan@example.com'
 };
 function normalizeLoginName(value){return value.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ')}
+function chooseLoginProfile(username,name,initials,avatarClass){
+  $('loginUsername').value=username;
+  $('selectedProfileName').textContent=name;
+  $('selectedProfileAvatar').className='profile-avatar '+avatarClass;
+  $('selectedProfileAvatar').innerHTML='<span>'+initials+'</span>';
+  $('profilePicker').classList.add('hidden');
+  $('loginCredentialPanel').classList.remove('hidden');
+  $('loginPass').value='';
+  $('loginError').textContent='';
+  $('loginPass').focus();
+}
+document.querySelectorAll('[data-profile-username]').forEach(card=>{
+  card.addEventListener('click',()=>chooseLoginProfile(
+    card.dataset.profileUsername,card.dataset.profileName,card.dataset.profileInitials,
+    card.querySelector('.profile-avatar').classList.contains('profile-admin')?'profile-admin':
+    card.querySelector('.profile-avatar').classList.contains('profile-andres')?'profile-andres':'profile-juan'
+  ));
+});
+$('changeLoginProfile').onclick=()=>{
+  $('loginPass').value='';$('loginError').textContent='';
+  $('loginCredentialPanel').classList.add('hidden');
+  $('profilePicker').classList.remove('hidden');
+};
 $('loginForm').onsubmit=async e=>{
   e.preventDefault();$('loginError').textContent='';
   const username=normalizeLoginName($('loginUsername').value),password=$('loginPass').value;
