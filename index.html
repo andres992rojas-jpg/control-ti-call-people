@@ -13,7 +13,29 @@
 <section id="history" class="section"><div class="card"><div class="toolbar"><h2>Historial</h2><input id="search" placeholder="Buscar TL, serial, responsable"><select id="filter"><option value="all">Todos</option><option value="movement">Movimientos PC</option><option value="check">Checklist</option></select></div><div id="historyRows" class="tablewrap"></div><div class="actions no-print" style="margin-top:12px"><button class="secondary" id="csv">Exportar CSV</button><button class="secondary" onclick="print()">Imprimir / PDF</button></div></div></section>
 <section id="trash" class="section"><div class="card"><h2>Papelera</h2><p class="muted">Los registros se pueden restaurar. Solo ADMIN puede eliminarlos definitivamente.</p><div id="trashRows" class="tablewrap"></div></div></section>
 <section id="audit" class="section"><div class="card"><h2>Auditoría</h2><p class="muted">Se registra quién creó, editó, eliminó o restauró cada registro y qué cambió.</p><div id="auditRows" class="tablewrap"></div></div></section>
-<section id="passwordChange" class="section"><div class="card"><h2>Cambiar contraseña</h2><p class="muted">Cambia la contraseña de la cuenta con la que has iniciado sesión. No necesitas correo electrónico.</p><form id="passwordForm"><label>Contraseña actual *</label><input id="currentPassword" type="password" autocomplete="current-password" required><label>Nueva contraseña *</label><input id="newPassword" type="password" minlength="8" autocomplete="new-password" required><label>Confirmar nueva contraseña *</label><input id="confirmPassword" type="password" minlength="8" autocomplete="new-password" required><div class="actions" style="margin-top:16px"><button>Actualizar contraseña</button><button type="button" class="secondary" onclick="go('home')">Cancelar</button></div><p id="passwordMessage" class="small" role="status"></p></form></div></section><section id="users" class="section"><div class="card"><h2>Usuarios</h2><div id="userRows"></div></div><div id="adminPasswordCard" class="card"><h3>Restablecer contraseña de un usuario</h3><p class="muted">Solo ADMIN puede asignar una contraseña nueva a las cuentas de Control TI. No necesitas conocer la contraseña anterior.</p><form id="adminPasswordForm"><label>Cuenta *</label><select id="adminTargetUser" required></select><label>Nueva contraseña *</label><input id="adminNewPassword" type="password" minlength="8" autocomplete="new-password" required><label>Confirmar nueva contraseña *</label><input id="adminConfirmPassword" type="password" minlength="8" autocomplete="new-password" required><div class="actions" style="margin-top:14px"><button>Guardar nueva contraseña</button></div><p id="adminPasswordMessage" class="small" role="status"></p></form></div></section></section><div class="footer">Control TI · Call People SAS · Aplicación conectada a Supabase</div></main>
+<section id="passwordChange" class="section"><div class="card"><h2>Cambiar contraseña</h2><p class="muted">Cambia la contraseña de la cuenta con la que has iniciado sesión. No necesitas correo electrónico.</p><form id="passwordForm"><label>Contraseña actual *</label><input id="currentPassword" type="password" autocomplete="current-password" required><label>Nueva contraseña *</label><input id="newPassword" type="password" minlength="8" autocomplete="new-password" required><label>Confirmar nueva contraseña *</label><input id="confirmPassword" type="password" minlength="8" autocomplete="new-password" required><div class="actions" style="margin-top:16px"><button>Actualizar contraseña</button><button type="button" class="secondary" onclick="go('home')">Cancelar</button></div><p id="passwordMessage" class="small" role="status"></p></form></div></section><section id="users" class="section">
+<div class="card"><h2>Usuarios</h2><div id="userRows"></div></div>
+<div id="adminIdentityCard" class="card">
+<h3>Modificar usuario y nombre visible</h3>
+<p class="muted">ADMIN puede cambiar el usuario que se escribe al iniciar sesión y el nombre que aparece en la aplicación.</p>
+<form id="adminIdentityForm">
+<label>Cuenta *</label><select id="adminIdentityTarget" required></select>
+<label>Usuario para iniciar sesión *</label><input id="adminNewUsername" type="text" minlength="3" maxlength="24" autocomplete="off" required placeholder="Ejemplo: ANDRES">
+<label>Nombre visible *</label><input id="adminNewFullName" type="text" minlength="2" maxlength="80" required placeholder="Ejemplo: Andrés Rojas">
+<div class="actions" style="margin-top:14px"><button>Guardar cambios de usuario</button></div>
+<p id="adminIdentityMessage" class="small" role="status"></p>
+</form></div>
+<div id="adminPasswordCard" class="card">
+<h3>Restablecer contraseña de un usuario</h3>
+<p class="muted">Solo ADMIN puede asignar una contraseña nueva a las cuentas de Control TI. No necesitas conocer la contraseña anterior.</p>
+<form id="adminPasswordForm">
+<label>Cuenta *</label><select id="adminTargetUser" required></select>
+<label>Nueva contraseña *</label><input id="adminNewPassword" type="password" minlength="8" autocomplete="new-password" required>
+<label>Confirmar nueva contraseña *</label><input id="adminConfirmPassword" type="password" minlength="8" autocomplete="new-password" required>
+<div class="actions" style="margin-top:14px"><button>Guardar nueva contraseña</button></div>
+<p id="adminPasswordMessage" class="small" role="status"></p>
+</form></div>
+</section></section><div class="footer">Control TI · Call People SAS · Aplicación conectada a Supabase</div></main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const SUPABASE_URL='https://qexmjowbrdzrqebeumhc.supabase.co';
@@ -46,7 +68,7 @@ async function loadCloudData(){
   const [rr,ar,pr]=await Promise.all([
     supabaseClient.from('control_ti_records').select('*').order('created_at',{ascending:false}),
     supabaseClient.from('control_ti_audit').select('*').order('created_at',{ascending:false}).limit(1000),
-    supabaseClient.from('control_ti_profiles').select('id,email,full_name,role,active').order('full_name')
+    supabaseClient.from('control_ti_profiles').select('*').order('full_name')
   ]);
   if(rr.error)throw rr.error;if(ar.error)throw ar.error;if(pr.error)throw pr.error;
   const rows=rr.data||[];
@@ -68,13 +90,20 @@ function subscribeRealtime(){
     .subscribe();
 }
 async function enterApp(user){
-  const {data:prof,error}=await supabaseClient.from('control_ti_profiles').select('id,email,full_name,role,active').eq('id',user.id).maybeSingle();
+  const {data:prof,error}=await supabaseClient.from('control_ti_profiles').select('*').eq('id',user.id).maybeSingle();
   if(error)throw error;
   if(!prof||!prof.active){await supabaseClient.auth.signOut();throw new Error('Esta cuenta no tiene acceso activo. Solicita al administrador que la habilite.');}
   current={userId:user.id,name:prof.full_name||prof.email,role:prof.role};
   await loadCloudData();subscribeRealtime();
   $('login').classList.add('hidden');$('app').classList.remove('hidden');$('who').textContent=current.name;$('welcome').textContent='Hola, '+current.name;$('role').textContent=current.role==='admin'?'Perfil administrador':'Perfil de TI';$('adminNav').classList.toggle('hidden',current.role!=='admin');
-  $('userRows').innerHTML=profiles.length?'<div class="tablewrap"><table><tr><th>Usuario</th><th>Perfil</th><th>Estado</th></tr>'+profiles.map(u=>`<tr><td>${esc(u.full_name||'Usuario')}</td><td>${u.role==='admin'?'Administrador':'TI'}</td><td>${u.active?'Activo':'Inactivo'}</td></tr>`).join('')+'</table></div>':'<p class="muted">No hay usuarios para mostrar.</p>';$('adminPasswordCard').classList.toggle('hidden',current.role!=='admin');$('adminTargetUser').innerHTML=profiles.filter(u=>u.active).map(u=>`<option value="${esc(u.id)}">${esc(u.full_name||'Usuario')} — ${u.role==='admin'?'ADMIN':'TI'}</option>`).join('');
+  $('userRows').innerHTML=profiles.length?'<div class="tablewrap"><table><tr><th>Nombre visible</th><th>Usuario de acceso</th><th>Perfil</th><th>Estado</th></tr>'+profiles.map(u=>`<tr><td>${esc(u.full_name||'Usuario')}</td><td>${esc(u.username||u.email?.split('@')[0]||'—')}</td><td>${u.role==='admin'?'Administrador':'TI'}</td><td>${u.active?'Activo':'Inactivo'}</td></tr>`).join('')+'</table></div>':'<p class="muted">No hay usuarios para mostrar.</p>';
+  $('adminPasswordCard').classList.toggle('hidden',current.role!=='admin');
+  $('adminIdentityCard').classList.toggle('hidden',current.role!=='admin');
+  const activeProfiles=profiles.filter(u=>u.active);
+  const options=activeProfiles.map(u=>`<option value="${esc(u.id)}">${esc(u.full_name||u.email||'Usuario')} — ${u.role==='admin'?'ADMIN':'TI'}</option>`).join('');
+  $('adminTargetUser').innerHTML=options;
+  $('adminIdentityTarget').innerHTML=options;
+  fillAdminIdentityFields();
   setupAppUI();
   const legacy=JSON.parse(localStorage.getItem(KEY)||'null');$('legacyBox').classList.toggle('hidden',current.role!=='admin'||!legacy||(legacy.records||[]).length===0);
 }
@@ -91,11 +120,15 @@ const LOGIN_ALIASES={
   juan:'controlti-juan@example.com',
   'juan diego':'controlti-juan@example.com'
 };
-function normalizeLoginName(value){return value.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ')}
+function normalizeLoginName(value){return value.trim().toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/\\s+/g,' ')}
 $('loginForm').onsubmit=async e=>{
   e.preventDefault();$('loginError').textContent='';
-  const username=normalizeLoginName($('loginUsername').value),email=LOGIN_ALIASES[username],password=$('loginPass').value;
-  if(!email){$('loginError').textContent='Usuario no válido. Utiliza ADMIN, ANDRES o JUAN.';return}
+  const username=normalizeLoginName($('loginUsername').value),password=$('loginPass').value;
+  let email=null;
+  const lookup=await supabaseClient.rpc('control_ti_lookup_login_email',{p_username:username});
+  if(!lookup.error) email=lookup.data;
+  if(!email) email=LOGIN_ALIASES[username];
+  if(!email){$('loginError').textContent='Usuario no válido o inactivo. Consulta con ADMIN.';return}
   const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});
   if(error){$('loginError').textContent='No se pudo iniciar sesión. Verifica tu usuario y contraseña.';return}
   try{await enterApp(data.user)}catch(err){$('loginError').textContent=err.message||'Error al cargar los datos.'}
@@ -121,6 +154,32 @@ function editRec(id){let r=db.records.find(x=>x.id===id);if(!r)return;if(r.kind=
 function render(){stats();renderDailySheets();let rs=db.records.slice().sort((a,b)=>b.id.localeCompare(a.id));$('recent').innerHTML=rs.slice(0,5).map(r=>`<p><b>${r.kind==='movement'?esc(r.type)+' de PC':'Checklist '+esc(r.visit)}</b> · ${esc(r.tl)} <span class="small">${esc(r.at)} · ${esc(r.by)}</span></p>`).join('')||'<p class="muted">Sin registros todavía.</p>';renderHistory();$('trashRows').innerHTML=db.trash.map(x=>`<tr><td>${x.record.kind==='movement'?'PC '+esc(x.record.type):'Checklist'} · ${esc(x.record.tl)}</td><td>${esc(x.by)}</td><td>${esc(x.at)}</td><td><button class="green" onclick="restore('${x.id}')">Restaurar</button> ${current.role==='admin'?`<button class="danger" onclick="purge('${x.id}')">Eliminar definitivamente</button>`:''}</td></tr>`).join('');if(db.trash.length)$('trashRows').innerHTML='<table><tr><th>Registro</th><th>Eliminado por</th><th>Fecha</th><th>Acciones</th></tr>'+ $('trashRows').innerHTML+'</table>'||'';else $('trashRows').innerHTML='<p class="muted">Papelera vacía.</p>';$('auditRows').innerHTML=db.audit.length?'<table><tr><th>Fecha</th><th>Usuario</th><th>Acción</th><th>Detalle / cambios</th></tr>'+db.audit.map(a=>`<tr><td>${esc(a.at)}</td><td>${esc(a.by)}</td><td>${esc(a.action)}</td><td>${esc(a.detail)}</td></tr>`).join('')+'</table>':'<p class="muted">Sin eventos registrados.</p>'}
 function renderDailySheets(){let cd=$('checkDay').value||todayISO(),md=$('moveDay').value||todayISO();$('checkDay').value=cd;$('moveDay').value=md;let checks=db.records.filter(r=>r.kind==='check'&&recordDay(r)===cd).sort((a,b)=>a.tl.localeCompare(b.tl)||a.visit.localeCompare(b.visit));let moves=db.records.filter(r=>r.kind==='movement'&&recordDay(r)===md).sort((a,b)=>a.tl.localeCompare(b.tl));$('dailyCheckRows').innerHTML=`<div class="print-only"><h2>Validación diaria de checklist</h2><p>Fecha: ${esc(cd)} · Call People SAS</p></div><table class="daily-table"><tr><th>TL</th><th>Horario</th><th>Resultados</th><th>Observaciones</th><th>Responsable TI</th><th>Firma TL</th></tr>${TL.flatMap(t=>['Mañana','Tarde'].map(v=>{let r=checks.find(x=>x.tl===t&&x.visit===v);return `<tr><td>${esc(t)}</td><td>${v}</td><td>${r?(r.items||[]).map(x=>`${esc(x.label)}: <b>${x.ok?'OK':'Pendiente'}</b>`).join('<br>'):'Sin registro'}</td><td>${esc(r?.obs||'—')}</td><td>${esc(r?.by||'—')}</td><td>${r?.sigTL?`<img class="daily-sign" src="${r.sigTL}" alt="Firma de ${esc(t)}">`:'—'}</td></tr>`}).join(''))}</table>`;$('dailyMoveRows').innerHTML=moves.length?`<div class="print-only"><h2>Registro diario de entrega y recibido</h2><p>Fecha: ${esc(md)} · Call People SAS</p></div><table class="daily-table"><tr><th>Movimiento</th><th>TL</th><th>Marca / serial</th><th>Accesorios</th><th>Observaciones</th><th>Responsable TI</th><th>Firma TL</th><th>Firma TI</th></tr>${moves.map(r=>`<tr><td>${esc(r.type)}</td><td>${esc(r.tl)}</td><td>${esc(r.brand)}<br>${esc(r.serial||'—')}</td><td>${esc((r.accessories||[]).join(', ')||'—')}</td><td>${esc(r.obs||'—')}</td><td>${esc(r.by)}</td><td>${r.sigTL?`<img class="daily-sign" src="${r.sigTL}" alt="Firma TL">`:'—'}</td><td>${r.sigTI?`<img class="daily-sign" src="${r.sigTI}" alt="Firma TI">`:'—'}</td></tr>`).join('')}</table>`:'<p class="muted">No hay entregas o recibidos registrados para esta fecha.</p>'}function printDaily(){document.body.classList.add('print-daily');window.print();setTimeout(()=>document.body.classList.remove('print-daily'),500)}$('checkDay').onchange=renderDailySheets;$('moveDay').onchange=renderDailySheets;
 function renderHistory(){let q=($('search').value||'').toLowerCase(),f=$('filter').value,rs=db.records.filter(r=>(f==='all'||r.kind===f)&&JSON.stringify(r).toLowerCase().includes(q));$('historyRows').innerHTML=rs.length?'<table><tr><th>Tipo / fecha</th><th>TL</th><th>Detalle</th><th>Responsable TI</th><th>Acciones</th></tr>'+rs.map(r=>`<tr><td>${r.kind==='movement'?esc(r.type)+' PC':'Checklist '+esc(r.visit)}<br>${esc(r.at)}</td><td>${esc(r.tl)}</td><td>${r.kind==='movement'?esc(r.brand)+' · '+esc(r.serial)+'<br>'+esc(r.accessories.join(', ')):'Observaciones: '+esc(r.obs||'—')}</td><td>${esc(r.by)}</td><td><div class="actions"><button class="secondary" onclick="viewRec('${r.id}')">Ver</button><button onclick="editRec('${r.id}')">Editar</button><button class="danger" onclick="delRec('${r.id}')">Eliminar</button></div></td></tr>`).join('')+'</table>':'<p class="muted">No hay registros.</p>'}function viewRec(id){let r=db.records.find(x=>x.id===id);if(!r)return;alert(`${r.tl}\n${r.at}\nResponsable TI: ${r.by}\n${r.kind==='movement'?`${r.type} · ${r.brand} · ${r.serial}\nAccesorios: ${r.accessories.join(', ')}\n${r.obs}`:`Checklist ${r.visit}\n${r.items.map(x=>(x.ok?'OK':'Pendiente')+' - '+x.label).join('\n')}\n${r.obs}`}\nFirmas guardadas en el registro.`)}$('search').oninput=renderHistory;$('filter').onchange=renderHistory;$('csv').onclick=()=>{let rows=[['Tipo','Fecha','TL','Responsable TI','Detalle','Observaciones'],...db.records.map(r=>[r.kind==='movement'?r.type:'Checklist '+r.visit,r.at,r.tl,r.by,r.kind==='movement'?r.brand+' '+r.serial+' '+r.accessories.join(','):r.items.map(x=>x.label+':'+(x.ok?'OK':'Pendiente')).join(';'),r.obs])];let csv=rows.map(a=>a.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(';')).join('\n');let a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}));a.download='control-ti-registros.csv';a.click();URL.revokeObjectURL(a.href)};$('passwordForm').onsubmit=async e=>{e.preventDefault();$('passwordMessage').textContent='';const currentPassword=$('currentPassword').value,newPassword=$('newPassword').value,confirmPassword=$('confirmPassword').value;if(newPassword.length<8){$('passwordMessage').textContent='La nueva contraseña debe tener al menos 8 caracteres.';return}if(newPassword!==confirmPassword){$('passwordMessage').textContent='La confirmación no coincide con la nueva contraseña.';return}if(newPassword===currentPassword){$('passwordMessage').textContent='La nueva contraseña debe ser diferente de la actual.';return}const {error}=await supabaseClient.auth.updateUser({password:newPassword,current_password:currentPassword});if(error){$('passwordMessage').textContent='No se pudo cambiar la contraseña: '+error.message;return}$('passwordForm').reset();$('passwordMessage').textContent='Contraseña actualizada correctamente. La próxima vez ingresa con la nueva contraseña.';};
+function fillAdminIdentityFields(){
+  const u=profiles.find(x=>x.id===$('adminIdentityTarget').value)||profiles.find(x=>x.active);
+  if(!u)return;
+  $('adminIdentityTarget').value=u.id;
+  const defaults={'controlti-admin@example.com':'ADMIN','controlti-andres@example.com':'ANDRES','controlti-juan@example.com':'JUAN'};
+  $('adminNewUsername').value=u.username||defaults[String(u.email||'').toLowerCase()]||String(u.email||'').split('@')[0].toUpperCase();
+  $('adminNewFullName').value=u.full_name||'';
+}
+$('adminIdentityTarget').onchange=fillAdminIdentityFields;
+$('adminIdentityForm').onsubmit=async e=>{
+  e.preventDefault();$('adminIdentityMessage').textContent='';
+  if(current?.role!=='admin')return;
+  $('adminIdentityMessage').textContent='Guardando cambios...';
+  const {error}=await supabaseClient.rpc('control_ti_admin_update_user',{
+    p_user_id:$('adminIdentityTarget').value,
+    p_new_username:$('adminNewUsername').value.trim(),
+    p_full_name:$('adminNewFullName').value.trim()
+  });
+  if(error){$('adminIdentityMessage').textContent='No se pudo modificar: '+error.message+' Comprueba que ejecutaste la migración de usuarios en Supabase.';return}
+  const selectedId=$('adminIdentityTarget').value;
+  await loadCloudData();
+  $('adminIdentityTarget').value=selectedId;
+  $('userRows').innerHTML=profiles.length?'<div class="tablewrap"><table><tr><th>Nombre visible</th><th>Usuario de acceso</th><th>Perfil</th><th>Estado</th></tr>'+profiles.map(u=>`<tr><td>${esc(u.full_name||'Usuario')}</td><td>${esc(u.username||u.email?.split('@')[0]||'—')}</td><td>${u.role==='admin'?'Administrador':'TI'}</td><td>${u.active?'Activo':'Inactivo'}</td></tr>`).join('')+'</table></div>':'<p class="muted">No hay usuarios para mostrar.</p>';
+  fillAdminIdentityFields();
+  $('adminIdentityMessage').textContent='Usuario de acceso y nombre visible actualizados correctamente.';
+};
 $('adminPasswordForm').onsubmit=async e=>{e.preventDefault();$('adminPasswordMessage').textContent='';if(current?.role!=='admin'){ $('adminPasswordMessage').textContent='Solo ADMIN puede cambiar contraseñas de otros usuarios.';return}const targetId=$('adminTargetUser').value,newPassword=$('adminNewPassword').value,confirmPassword=$('adminConfirmPassword').value;if(!targetId){$('adminPasswordMessage').textContent='Selecciona una cuenta.';return}if(newPassword.length<8){$('adminPasswordMessage').textContent='La nueva contraseña debe tener al menos 8 caracteres.';return}if(newPassword!==confirmPassword){$('adminPasswordMessage').textContent='Las contraseñas no coinciden.';return}const selected=profiles.find(p=>p.id===targetId);if(!selected){$('adminPasswordMessage').textContent='No se encontró la cuenta seleccionada.';return}const {data,error}=await supabaseClient.functions.invoke('control-ti-admin-set-password',{body:{userId:targetId,newPassword}});if(error){let msg=error.message||'Error al cambiar contraseña.';try{const body=await error.context.json();if(body?.error)msg=body.error}catch{}$('adminPasswordMessage').textContent='No se pudo cambiar: '+msg;return}$('adminPasswordForm').reset();$('adminPasswordMessage').textContent='Contraseña actualizada para '+(selected.full_name||'el usuario')+'.';};
 start();
 </script></body></html>
