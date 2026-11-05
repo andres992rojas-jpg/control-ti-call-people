@@ -37,6 +37,11 @@
 .selected-profile small{display:block;color:var(--muted);font-size:12px;margin-top:4px}
 @media(max-width:560px){.profile-login{margin:6vh auto}.profile-brand{margin-bottom:32px}.profile-grid{gap:8px}.profile-card{padding:8px 3px;gap:9px}.profile-avatar{width:min(27vw,112px);height:min(27vw,112px);border-radius:13px;font-size:32px}.profile-name{font-size:13px}.profile-heading{font-size:25px}}
 @media(prefers-reduced-motion:reduce){.profile-card,.profile-avatar{transition:none}}
+
+/* Estado visible de los accesorios de audífonos */
+#headsetGood,#headsetDamaged{width:21px!important;height:21px!important;min-height:21px!important;flex:0 0 21px;accent-color:#9855d3!important;cursor:pointer}
+.check:has(#headsetGood),.check:has(#headsetDamaged){min-height:54px;padding:13px 14px;background:linear-gradient(110deg,rgba(152,85,211,.13),rgba(28,29,37,.96));border:1px solid rgba(152,85,211,.38);border-radius:11px}
+.check:has(#headsetGood) label,.check:has(#headsetDamaged) label{color:#eee0ff;font-weight:750}
 </style>
 <style id="corporate-netflix-theme">
 :root{
