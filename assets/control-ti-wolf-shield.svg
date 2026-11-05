@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 360" role="img" aria-labelledby="title desc">
+<title id="title">Control TI cyber wolf shield</title><desc id="desc">A futuristic wolf head protected by a red and purple digital shield, with a gold lock.</desc>
+<defs>
+ <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ff3348"/><stop offset=".52" stop-color="#a52cff"/><stop offset="1" stop-color="#e6b94f"/></linearGradient>
+ <linearGradient id="fur" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f4edf8"/><stop offset=".48" stop-color="#9d91aa"/><stop offset="1" stop-color="#302637"/></linearGradient>
+ <filter id="glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<path d="M160 12 286 60v105c0 83-48 143-126 181C82 308 34 248 34 165V60Z" fill="#0b0911" stroke="url(#edge)" stroke-width="12" filter="url(#glow)"/>
+<path d="M160 29 270 70v94c0 70-39 124-110 162-71-38-110-92-110-162V70Z" fill="none" stroke="#ffffff" stroke-opacity=".18" stroke-width="2"/>
+<path d="m81 98 13-55 56 43 10 26-33 28-24-13Z" fill="#33283c" stroke="#f0445d" stroke-width="5"/>
+<path d="m239 98-13-55-56 43-10 26 33 28 24-13Z" fill="#33283c" stroke="#a84bdf" stroke-width="5"/>
+<path d="m93 112 18-46 33 36-14 38Z" fill="#d7cbdc"/><path d="m227 112-18-46-33 36 14 38Z" fill="#c8b6d5"/>
+<path d="M160 82 111 126l-14 62 23 66 40 36 40-36 23-66-14-62Z" fill="url(#fur)" stroke="#e9dce9" stroke-opacity=".7" stroke-width="3"/>
+<path d="m111 145 43 15-13 22-39-9Z" fill="#15111b"/><path d="m209 145-43 15 13 22 39-9Z" fill="#15111b"/>
+<path d="m117 153 28 7-18 10Z" fill="#ff4055" filter="url(#glow)"/><path d="m203 153-28 7 18 10Z" fill="#bd5cff" filter="url(#glow)"/>
+<path d="m160 142-22 48 22 30 22-30Z" fill="#514556"/>
+<path d="m138 224 22-10 22 10-22 22Z" fill="#17121b" stroke="#d7c8df" stroke-width="2"/>
+<path d="m122 246 38 30 38-30-18 44-20 16-20-16Z" fill="#322838"/>
+<path d="M139 274 160 292l21-18" fill="none" stroke="#a99aaf" stroke-width="4" stroke-linecap="round"/>
+<path d="M145 304v16c0 10 7 17 15 17s15-7 15-17v-16" fill="none" stroke="#d7ad48" stroke-width="8" stroke-linecap="round"/>
+<rect x="132" y="294" width="56" height="42" rx="8" fill="#17121b" stroke="#e2b64b" stroke-width="7"/>
+<circle cx="160" cy="314" r="5" fill="#e2b64b"/><path d="M160 318v8" stroke="#e2b64b" stroke-width="4"/>
+</svg>
