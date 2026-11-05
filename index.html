@@ -120,7 +120,7 @@ const LOGIN_ALIASES={
   juan:'controlti-juan@example.com',
   'juan diego':'controlti-juan@example.com'
 };
-function normalizeLoginName(value){return value.trim().toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/\\s+/g,' ')}
+function normalizeLoginName(value){return value.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ')}
 $('loginForm').onsubmit=async e=>{
   e.preventDefault();$('loginError').textContent='';
   const username=normalizeLoginName($('loginUsername').value),password=$('loginPass').value;
