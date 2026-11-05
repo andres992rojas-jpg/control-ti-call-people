@@ -1,11 +1,7 @@
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.0";
+import { createClient } from "npm:@supabase/supabase-js@^2.95.0";
+import { corsHeaders } from "npm:@supabase/supabase-js@^2.95.0/cors";
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, apikey, x-client-info, content-type",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-  "Content-Type": "application/json",
-};
+
 
 function getSecretKey(): string | null {
   const legacy = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
@@ -25,7 +21,7 @@ function getSecretKey(): string | null {
 function jsonResponse(status: number, body: Record<string, unknown>) {
   return new Response(JSON.stringify(body), {
     status,
-    headers: corsHeaders,
+    headers: { ...corsHeaders, "Content-Type": "application/json" },
   });
 }
 
