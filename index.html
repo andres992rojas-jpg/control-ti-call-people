@@ -10,11 +10,26 @@
 .profile-card{background:transparent!important;color:var(--ink)!important;border:2px solid transparent;padding:10px 8px 12px;display:flex;flex-direction:column;align-items:center;gap:12px;min-height:0;transition:transform .18s ease,border-color .18s ease,background .18s ease;box-shadow:none}
 .profile-card:hover,.profile-card:focus-visible{transform:translateY(-5px);border-color:#b7cde0;background:#fff!important;outline:none}
 .profile-avatar{width:clamp(104px,16vw,142px);height:clamp(104px,16vw,142px);border-radius:17px;display:grid;place-items:center;color:#fff;font-size:42px;font-weight:800;letter-spacing:-1px;box-shadow:0 9px 22px rgba(16,36,58,.16);border:3px solid rgba(255,255,255,.88);transition:box-shadow .18s ease,transform .18s ease}
-.profile-admin{background:linear-gradient(145deg,#24496d,#10243a)}
-.profile-andres{background:linear-gradient(145deg,#3288b8,#1769aa)}
-.profile-juan{background:linear-gradient(145deg,#5b6e91,#303f5d)}
-.profile-card:hover .profile-avatar{box-shadow:0 14px 28px rgba(16,36,58,.25);transform:scale(1.035)}
-.profile-name{font-size:16px;font-weight:650;color:var(--ink)}
+.profile-card{position:relative;overflow:hidden;background:linear-gradient(155deg,#242424 0%,#101010 58%,#050505 100%)!important;border:2px solid #303030;border-radius:19px;padding:15px 10px 16px;box-shadow:0 12px 28px rgba(0,0,0,.14)}
+.profile-card::before{content:"";position:absolute;inset:0 0 auto;height:4px;opacity:.9}
+.profile-card[data-profile-username="admin"]{border-color:rgba(212,175,55,.42);box-shadow:0 10px 26px rgba(119,83,17,.12)}
+.profile-card[data-profile-username="admin"]::before{background:linear-gradient(90deg,#7c5a16,#f6df8c,#9d741e)}
+.profile-card[data-profile-username="andres"]{border-color:rgba(190,35,48,.45);box-shadow:0 10px 26px rgba(116,10,22,.12)}
+.profile-card[data-profile-username="andres"]::before{background:linear-gradient(90deg,#650d18,#ff747b,#a31320)}
+.profile-card[data-profile-username="juan"]{border-color:rgba(133,73,196,.5);box-shadow:0 10px 26px rgba(62,25,103,.14)}
+.profile-card[data-profile-username="juan"]::before{background:linear-gradient(90deg,#35105e,#c18aff,#6826a5)}
+.profile-admin{background:linear-gradient(145deg,#fff0a8 0%,#d7ad42 28%,#7e5918 62%,#080808 100%);color:#fff4c7;text-shadow:0 2px 6px rgba(0,0,0,.7);border-color:rgba(255,226,140,.78)}
+.profile-andres{background:linear-gradient(145deg,#8e101e 0%,#e12b39 35%,#4b080f 68%,#050505 100%);color:#ffe4e5;text-shadow:0 2px 6px rgba(0,0,0,.7);border-color:rgba(255,110,120,.75)}
+.profile-juan{background:linear-gradient(145deg,#4b1677 0%,#8c42c7 35%,#251039 68%,#050505 100%);color:#f1ddff;text-shadow:0 2px 6px rgba(0,0,0,.7);border-color:rgba(198,145,255,.8)}
+.profile-name{font-size:16px;font-weight:700;color:#f4f4f4;letter-spacing:.1px}
+.profile-card[data-profile-username="admin"] .profile-name{color:#f1d27a}
+.profile-card[data-profile-username="andres"] .profile-name{color:#ff7a82}
+.profile-card[data-profile-username="juan"] .profile-name{color:#c99aff}
+.profile-card:hover,.profile-card:focus-visible{background:linear-gradient(155deg,#303030 0%,#111 58%,#050505 100%)!important;transform:translateY(-6px);outline:none}
+.profile-card[data-profile-username="admin"]:hover,.profile-card[data-profile-username="admin"]:focus-visible{border-color:#e4bf57;box-shadow:0 18px 34px rgba(157,116,30,.28)}
+.profile-card[data-profile-username="andres"]:hover,.profile-card[data-profile-username="andres"]:focus-visible{border-color:#e3414e;box-shadow:0 18px 34px rgba(163,19,32,.3)}
+.profile-card[data-profile-username="juan"]:hover,.profile-card[data-profile-username="juan"]:focus-visible{border-color:#a55de0;box-shadow:0 18px 34px rgba(104,38,165,.32)}
+.profile-card:hover .profile-avatar{box-shadow:0 14px 28px rgba(0,0,0,.4);transform:scale(1.045)}
 .login-credentials{max-width:380px;margin:0 auto;background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;text-align:left;box-shadow:0 16px 45px rgba(16,36,58,.1)}
 .selected-profile{display:flex;align-items:center;gap:14px;margin-bottom:20px}
 .selected-profile .profile-avatar{width:64px;height:64px;border-radius:12px;font-size:22px;flex:0 0 64px}
