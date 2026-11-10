@@ -518,33 +518,34 @@ async function emptyTrash(){
   render();
   alert(`Papelera vaciada. Se eliminaron ${ids.length} registro(s).`);
 }
+function getRecordNotification(r){
+  const obs=String(r.obs||'').trim();
+  if(r.kind==='movement')return obs?{obs,detail:'Observación: '+obs}:null;
+  const noveltySelected=(r.items||[]).some(x=>x.label==='Novedades o daños en computadores'&&x.ok===true);
+  if(r.kind==='check'&&noveltySelected&&obs)return {obs,detail:'Novedades o daños reportados: '+obs};
+  return null;
+}
 function renderNotifications(){
   const rows=db.records.slice().sort((a,b)=>String(b.id).localeCompare(String(a.id))).map(r=>{
-    const obs=String(r.obs||'').trim();
-    const pending=r.kind==='check'?(r.items||[]).filter(x=>!x.ok).map(x=>x.label):[];
-    if(!obs&&!pending.length)return null;
-    return {r,obs,pending};
+    const notice=getRecordNotification(r);
+    return notice?{r,notice}:null;
   }).filter(Boolean).slice(0,12);
   $('notificationCount').textContent=rows.length;
-  $('notifications').innerHTML=rows.length?'<div class="notification-list">'+rows.map(({r,obs,pending})=>{
+  $('notifications').innerHTML=rows.length?'<div class="notification-list">'+rows.map(({r,notice})=>{
     const isCheck=r.kind==='check';
     const title=isCheck?'Checklist · '+(r.visit||'Visita'):(r.type||'Movimiento')+' de PC';
-    const detail=[obs?'Observación: '+obs:'',pending.length?'Pendiente / por revisar: '+pending.join(', '):''].filter(Boolean).join('\\n');
-    const hasAlert=!!pending.length;
-    return '<article class="notification-item '+(hasAlert?'pending':'')+'"><div class="notification-meta"><span class="notification-tag '+(hasAlert?'alert':'')+'">'+(hasAlert?'Requiere revisión':'Observación')+'</span><b>'+esc(title)+'</b><span>TL: '+esc(r.tl||'—')+'</span><span>'+esc(r.at||'')+'</span></div><p>'+esc(detail)+'</p></article>';
-  }).join('')+'</div>':'<p class="muted">No hay observaciones ni novedades pendientes registradas.</p>';
+    return '<article class="notification-item"><div class="notification-meta"><span class="notification-tag">Novedad registrada</span><b>'+esc(title)+'</b><span>TL: '+esc(r.tl||'—')+'</span><span>'+esc(r.at||'')+'</span></div><p>'+esc(notice.detail)+'</p></article>';
+  }).join('')+'</div>':'<p class="muted">No hay observaciones ni novedades reportadas.</p>';
 }
 function renderObservationsByTL(){
   let total=0;
   $('observationsByTL').innerHTML='<div class="tl-observations">'+TL.map(t=>{
     const entries=db.records.filter(r=>String(r.tl||'').toUpperCase()===t).map(r=>{
-      const obs=String(r.obs||'').trim();
-      const pending=r.kind==='check'?(r.items||[]).filter(x=>!x.ok).map(x=>x.label):[];
-      if(!obs&&!pending.length)return '';
+      const notice=getRecordNotification(r);
+      if(!notice)return '';
       total++;
       const title=r.kind==='check'?'Checklist · '+(r.visit||'Visita'):(r.type||'Movimiento')+' de PC';
-      const detail=[obs?'Observación: '+obs:'',pending.length?'Pendiente / por revisar: '+pending.join(', '):''].filter(Boolean).join('\\n');
-      return '<div class="tl-observation-entry"><b>'+esc(title)+'</b><div class="small">'+esc(r.at||'')+' · '+esc(r.by||'')+'</div><p>'+esc(detail)+'</p></div>';
+      return '<div class="tl-observation-entry"><b>'+esc(title)+'</b><div class="small">'+esc(r.at||'')+' · '+esc(r.by||'')+'</div><p>'+esc(notice.detail)+'</p></div>';
     }).filter(Boolean);
     return '<section class="tl-observation-group"><h4><span>'+esc(t)+'</span><span class="small">'+entries.length+' novedad(es)</span></h4>'+(entries.join('')||'<p class="muted">Sin observaciones registradas.</p>')+'</section>';
   }).join('')+'</div>';
